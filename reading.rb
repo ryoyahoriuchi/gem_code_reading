@@ -1,7 +1,17 @@
 require "slack-notify"
-require "clockwork"
+require "dotenv"
+Dotenv.load ".env"
+require 'clockwork'
+require 'active_support/time'
 
-client = SlackNotify::Client.new(webhook_url: "https://hooks.slack.com/services/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")
-client = SlackNotify.new(options)
+module Clockwork
+  client = SlackNotify::Client.new(
+    webhook_url: ENV['ADDRESS'],
+    channel: "#gemコードリーディング",
+    username: "sample_bot"
+  )
 
-client.test
+  every(3.minutes, "aisatu") do
+    client.notify("Hello World!!!!!!!!!!!")
+  end
+end
